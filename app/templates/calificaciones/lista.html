@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}
+Calificaciones
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-white p-4 rounded-3 shadow-sm border">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+
+            Listado de Calificaciones
+
+        </h2>
+
+        <a href="{{ url_for('calificaciones.nuevo') }}"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Nueva Calificación
+
+        </a>
+
+    </div>
+
+    <form method="GET"
+          action="{{ url_for('calificaciones.lista') }}"
+          class="mb-4">
+
+        <div class="input-group">
+
+            <input type="text"
+                   name="buscar"
+                   class="form-control"
+                   placeholder="Buscar estudiante..."
+                   value="{{ busqueda }}">
+
+            <button class="btn btn-primary"
+                    type="submit">
+
+                <i class="bi bi-search"></i>
+
+                Buscar
+
+            </button>
+
+            {% if busqueda %}
+
+                <a href="{{ url_for('calificaciones.lista') }}"
+                   class="btn btn-secondary">
+
+                    Limpiar
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </form>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+                <tr>
+
+                    <th>Estudiante</th>
+
+                    <th>Asignatura</th>
+
+                    <th>Nota</th>
+
+                    <th class="text-center">
+
+                        Acciones
+
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% if calificaciones %}
+
+                    {% for c in calificaciones %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ c.inscripcion.estudiante.carnet }}
+
+                                -
+
+                                {{ c.inscripcion.estudiante.nombres }}
+
+                                {{ c.inscripcion.estudiante.apellidos }}
+
+                            </td>
+
+                            <td>
+
+                                {{ c.inscripcion.asignatura.nombre }}
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge fs-6
+                                    {% if c.nota >= 6 %}
+                                        bg-success
+                                    {% else %}
+                                        bg-danger
+                                    {% endif %}">
+
+                                    {{ "%.2f"|format(c.nota) }}
+
+                                </span>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <a href="{{ url_for('calificaciones.editar', id=c.id) }}"
+                                   class="btn btn-warning btn-sm">
+
+                                    Editar
+
+                                </a>
+
+                                <form action="{{ url_for('calificaciones.eliminar', id=c.id) }}"
+                                      method="POST"
+                                      class="d-inline"
+                                      onsubmit="return confirm('¿Eliminar esta calificación?');">
+
+                                    <button class="btn btn-danger btn-sm">
+
+                                        Eliminar
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="text-center text-muted py-4">
+
+                            No hay calificaciones registradas.
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

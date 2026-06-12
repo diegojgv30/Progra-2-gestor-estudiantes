@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}
+Inscripciones
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-white p-4 rounded-3 shadow-sm border">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+
+            Gestión de Inscripciones
+
+        </h2>
+
+        <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#modalInscripcion">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Nueva Inscripción
+
+        </button>
+
+    </div>
+
+    <table class="table table-hover align-middle">
+
+        <thead class="table-light">
+
+            <tr>
+
+                <th>Estudiante</th>
+
+                <th>Asignatura</th>
+
+                <th class="text-center">
+
+                    Acciones
+
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for inscripcion in inscripciones %}
+
+                <tr>
+
+                    <td>
+
+                        {{ inscripcion.estudiante.carnet }}
+
+                        -
+
+                        {{ inscripcion.estudiante.nombres }}
+
+                        {{ inscripcion.estudiante.apellidos }}
+
+                    </td>
+
+                    <td>
+
+                        {{ inscripcion.asignatura.codigo }}
+
+                        -
+
+                        {{ inscripcion.asignatura.nombre }}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <form method="POST"
+                              action="{{ url_for('inscripciones.eliminar', id=inscripcion.id) }}"
+                              style="display:inline;">
+
+                            <button class="btn btn-sm btn-danger"
+                                    onclick="return confirm('¿Eliminar inscripción?')">
+
+                                Eliminar
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="modal fade"
+     id="modalInscripcion">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form method="POST"
+                  action="{{ url_for('inscripciones.crear') }}">
+
+                {{ form.hidden_tag() }}
+
+                <div class="modal-header">
+
+                    <h5>
+
+                        Nueva Inscripción
+
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        {{ form.estudiante_id.label(class="form-label") }}
+
+                        {{ form.estudiante_id(class="form-select") }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.asignatura_id.label(class="form-label") }}
+
+                        {{ form.asignatura_id(class="form-select") }}
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    {{ form.submit(class="btn btn-primary") }}
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

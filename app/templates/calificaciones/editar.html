@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ "Editar" if form.inscripcion_id.data else "Nueva" }} Calificación{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{{ "Editar" if form.inscripcion_id.data else "Registrar Nueva" }} Calificación</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.inscripcion_id.label(class="form-label fw-bold") }}
+                            
+                            {# Cambiamos form-control por form-select y quitamos el placeholder #}
+                            {{ form.inscripcion_id(class="form-select") }}
+                            
+                            {% for error in form.inscripcion_id.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.nota.label(class="form-label fw-bold") }}
+                            {{ form.nota(class="form-control", step="0.01", placeholder="Ej: 8.5") }}
+                            {% for error in form.nota.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('calificaciones.lista') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                            {{ form.submit(class="btn btn-success") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mis Asignaturas
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-white p-4 rounded-3 shadow-sm border">
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+
+            Mis Asignaturas
+
+        </h2>
+
+        <p class="text-muted">
+
+            Estas son las asignaturas en las que estás inscrito.
+
+        </p>
+
+    </div>
+
+    {% if inscripciones %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Código</th>
+
+                        <th>Asignatura</th>
+
+                        <th>Descripción</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for inscripcion in inscripciones %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ inscripcion.asignatura.codigo }}
+
+                            </td>
+
+                            <td>
+
+                                {{ inscripcion.asignatura.nombre }}
+
+                            </td>
+
+                            <td>
+
+                                {{ inscripcion.asignatura.descripcion
+                                   if inscripcion.asignatura.descripcion
+                                   else 'Sin descripción' }}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-info">
+
+            No estás inscrito en ninguna asignatura.
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Asignatura{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{{ url_for('asignaturas.lista') }}" class="btn btn-outline-secondary me-3" title="Regresar">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h2 class="fw-bold text-dark m-0"><i class="bi bi-pencil-square text-success me-2"></i>Modificar Asignatura</h2>
+                <small class="text-muted">Actualiza los datos de la materia seleccionada.</small>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.codigo.label(class="form-label fw-semibold") }}
+                        {{ form.codigo(class="form-control", placeholder="Ej: MAT002") }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label fw-semibold") }}
+                        {{ form.nombre(class="form-control", placeholder="Ej: Matemática General") }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.descripcion.label(class="form-label fw-semibold") }}
+                        {{ form.descripcion(class="form-control", rows="3", placeholder="Breve descripción...") }}
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{{ url_for('asignaturas.lista') }}" class="btn btn-secondary fw-semibold px-4">Cancelar</a>
+                        {{ form.submit(class="btn btn-success fw-bold px-4 text-white", value="Actualizar Datos") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

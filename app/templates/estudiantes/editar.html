@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Estudiante{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{{ url_for('estudiantes.lista') }}" class="btn btn-outline-secondary me-3" title="Regresar">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h2 class="fw-bold text-dark m-0"><i class="bi bi-pencil-square text-warning me-2"></i>Modificar Estudiante</h2>
+                <small class="text-muted">Actualiza los datos del registro seleccionado.</small>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.carnet.label(class="form-label fw-semibold") }}
+                        {{ form.carnet(class="form-control", placeholder="Ej: DG19002") }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.nombres.label(class="form-label fw-semibold") }}
+                        {{ form.nombres(class="form-control", placeholder="Juan Antonio") }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.apellidos.label(class="form-label fw-semibold") }}
+                        {{ form.apellidos(class="form-control", placeholder="Pérez Gómez") }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.correo.label(class="form-label fw-semibold") }}
+                        {{ form.correo(class="form-control", placeholder="juan.perez@ues.edu.sv") }}
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{{ url_for('estudiantes.lista') }}" class="btn btn-secondary fw-semibold px-4">Cancelar</a>
+                        {{ form.submit(class="btn btn-warning fw-bold px-4 text-dark", value="Actualizar Datos") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

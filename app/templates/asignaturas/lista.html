@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}Control de Asignaturas{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold text-dark m-0">
+                    <i class="bi bi-book-half text-success me-2"></i>
+                    Gestión de Asignaturas
+                </h2>
+
+                <small class="text-muted">
+                    Listado de materias y asignaturas académicas configuradas.
+                </small>
+
+            </div>
+
+            {% if current_user.rol.nombre == 'Administrador' %}
+
+            <button
+                type="button"
+                class="btn btn-success shadow-sm fw-bold px-3"
+                data-bs-toggle="modal"
+                data-bs-target="#modalAsignatura">
+
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Nueva Asignatura
+
+            </button>
+
+            {% endif %}
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3 mb-3">
+
+            <div class="card-body">
+
+                <form
+                    method="GET"
+                    action="{{ url_for('asignaturas.lista') }}">
+
+                    <div class="input-group">
+
+                        <input
+                            type="text"
+                            name="buscar"
+                            class="form-control"
+                            placeholder="Buscar por código, nombre o descripción..."
+                            value="{{ busqueda }}">
+
+                        <button
+                            class="btn btn-success"
+                            type="submit">
+
+                            <i class="bi bi-search me-1"></i>
+                            Buscar
+
+                        </button>
+
+                        {% if busqueda %}
+
+                        <a
+                            href="{{ url_for('asignaturas.lista') }}"
+                            class="btn btn-secondary">
+
+                            Limpiar
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th class="ps-4" style="width: 20%;">
+                                    Código
+                                </th>
+
+                                <th style="width: 40%;">
+                                    Nombre de la Asignatura
+                                </th>
+
+                                <th style="width: 30%;">
+                                    Descripción
+                                </th>
+
+                                <th
+                                    class="text-end pe-4"
+                                    style="width: 10%;">
+
+                                    Acciones
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% if asignaturas %}
+
+                                {% for asig in asignaturas %}
+
+                                <tr>
+
+                                    <td class="ps-4 fw-semibold text-success">
+
+                                        {{ asig.codigo }}
+
+                                    </td>
+
+                                    <td class="fw-bold text-secondary">
+
+                                        {{ asig.nombre }}
+
+                                    </td>
+
+                                    <td class="text-muted small">
+
+                                        {{ asig.descripcion if asig.descripcion else 'Sin descripción disponible.' }}
+
+                                    </td>
+
+                                    <td class="text-end pe-4">
+
+                                        {% if current_user.rol.nombre == 'Administrador' %}
+
+                                        <a
+                                            href="{{ url_for('asignaturas.editar', id=asig.id) }}"
+                                            class="btn btn-sm btn-outline-warning me-1"
+                                            title="Editar Asignatura">
+
+                                            <i class="bi bi-pencil-square text-dark"></i>
+
+                                        </a>
+
+                                        <form
+                                            action="{{ url_for('asignaturas.eliminar', id=asig.id) }}"
+                                            method="POST"
+                                            class="d-inline"
+                                            onsubmit="return confirm('¿Estás seguro de eliminar esta asignatura?');">
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                title="Eliminar">
+
+                                                <i class="bi bi-trash3-fill"></i>
+
+                                            </button>
+
+                                        </form>
+
+                                        {% else %}
+
+                                        <span class="text-muted small">
+                                            Solo lectura
+                                        </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="text-center py-5 text-muted">
+
+                                    <i
+                                        class="bi bi-book d-block mb-2"
+                                        style="font-size: 2.5rem;">
+                                    </i>
+
+                                    {% if busqueda %}
+
+                                        No se encontraron asignaturas para la búsqueda realizada.
+
+                                    {% else %}
+
+                                        No hay asignaturas registradas.
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endif %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% if current_user.rol.nombre == 'Administrador' %}
+
+<div
+    class="modal fade"
+    id="modalAsignatura"
+    data-bs-backdrop="static"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg">
+
+            <div class="modal-header bg-dark text-white">
+
+                <h5 class="modal-title fw-bold">
+
+                    <i class="bi bi-bookmark-plus-fill me-2 text-warning"></i>
+
+                    Registrar Asignatura
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+
+            </div>
+
+            <form
+                method="POST"
+                action="{{ url_for('asignaturas.crear') }}">
+
+                {{ form.hidden_tag() }}
+
+                <div class="modal-body p-4">
+
+                    <div class="mb-3">
+
+                        {{ form.codigo.label(class="form-label fw-semibold") }}
+
+                        {{ form.codigo(
+                            class="form-control",
+                            placeholder="Ej: MAT002"
+                        ) }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.nombre.label(class="form-label fw-semibold") }}
+
+                        {{ form.nombre(
+                            class="form-control",
+                            placeholder="Ej: Matemática General"
+                        ) }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.descripcion.label(class="form-label fw-semibold") }}
+
+                        {{ form.descripcion(
+                            class="form-control",
+                            rows="3",
+                            placeholder="Breve descripción..."
+                        ) }}
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer bg-light border-top-0">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary fw-semibold"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    {{ form.submit(
+                        class="btn btn-success fw-bold px-4"
+                    ) }}
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

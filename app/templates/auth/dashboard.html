@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard - Gestión Académica
+{% endblock %}
+
+{% block content %}
+
+<div class="card mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-auto">
+
+                <div class="dashboard-header-icon">
+
+                    <i class="bi bi-mortarboard-fill"></i>
+
+                </div>
+
+            </div>
+
+            <div class="col">
+
+                <h1 class="fw-bold mb-2">
+
+                    Bienvenido, {{ current_user.nombre }}
+
+                </h1>
+
+                <p class="text-muted mb-2">
+
+                    Sistema de Gestión Académica · Universidad de El Salvador
+
+                </p>
+
+                <span class="badge bg-primary px-3 py-2">
+
+                    {{ rol }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    {% if rol == 'Administrador' %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{{ url_for('estudiantes.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-primary-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Estudiantes
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.estudiantes }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Estudiantes registrados
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-primary">
+
+                            <i class="bi bi-people-fill"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="dashboard-card dashboard-success-card">
+
+                <div class="dashboard-content">
+
+                    <div>
+
+                        <div class="dashboard-label">
+
+                            Docentes
+
+                        </div>
+
+                        <div class="dashboard-number">
+
+                            {{ datos.docentes }}
+
+                        </div>
+
+                        <div class="dashboard-text">
+
+                            Docentes activos
+
+                        </div>
+
+                    </div>
+
+                    <div class="dashboard-icon dashboard-success">
+
+                        <i class="bi bi-person-workspace"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{{ url_for('asignaturas.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-info-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Asignaturas
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.asignaturas }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Materias disponibles
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-info">
+
+                            <i class="bi bi-journal-richtext"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <a href="{{ url_for('inscripciones.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-warning-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Inscripciones
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.inscripciones }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Inscripciones registradas
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-warning">
+
+                            <i class="bi bi-clipboard2-check-fill"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <a href="{{ url_for('calificaciones.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-danger-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Calificaciones
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.calificaciones }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Calificaciones registradas
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-danger">
+
+                            <i class="bi bi-award-fill"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    {% elif rol == 'Docente' %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{{ url_for('estudiantes.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-primary-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Estudiantes
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.estudiantes }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Estudiantes registrados
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-primary">
+
+                            <i class="bi bi-people-fill"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{{ url_for('asignaturas.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-info-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Asignaturas
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.asignaturas }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Materias disponibles
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-info">
+
+                            <i class="bi bi-journal-richtext"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{{ url_for('calificaciones.lista') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-danger-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Calificaciones
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.calificaciones }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Calificaciones registradas
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-danger">
+
+                            <i class="bi bi-award-fill"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    {% elif rol == 'Estudiante' %}
+
+        <div class="col-lg-3 col-md-6">
+
+            <a href="{{ url_for('inscripciones.mis_asignaturas') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-primary-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Mis Asignaturas
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.materias }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Materias inscritas
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-primary">
+
+                            <i class="bi bi-journal-bookmark-fill"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card dashboard-success-card">
+
+                <div class="dashboard-content">
+
+                    <div>
+
+                        <div class="dashboard-label">
+
+                            Aprobadas
+
+                        </div>
+
+                        <div class="dashboard-number">
+
+                            {{ datos.aprobadas }}
+
+                        </div>
+
+                        <div class="dashboard-text">
+
+                            Materias aprobadas
+
+                        </div>
+
+                    </div>
+
+                    <div class="dashboard-icon dashboard-success">
+
+                        <i class="bi bi-patch-check-fill"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card dashboard-danger-card">
+
+                <div class="dashboard-content">
+
+                    <div>
+
+                        <div class="dashboard-label">
+
+                            Reprobadas
+
+                        </div>
+
+                        <div class="dashboard-number">
+
+                            {{ datos.reprobadas }}
+
+                        </div>
+
+                        <div class="dashboard-text">
+
+                            Materias reprobadas
+
+                        </div>
+
+                    </div>
+
+                    <div class="dashboard-icon dashboard-danger">
+
+                        <i class="bi bi-exclamation-octagon-fill"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <a href="{{ url_for('calificaciones.mis_calificaciones') }}"
+               class="dashboard-link">
+
+                <div class="dashboard-card dashboard-info-card">
+
+                    <div class="dashboard-content">
+
+                        <div>
+
+                            <div class="dashboard-label">
+
+                                Promedio
+
+                            </div>
+
+                            <div class="dashboard-number">
+
+                                {{ datos.promedio }}
+
+                            </div>
+
+                            <div class="dashboard-text">
+
+                                Promedio general
+
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-icon dashboard-info">
+
+                            <i class="bi bi-graph-up-arrow"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

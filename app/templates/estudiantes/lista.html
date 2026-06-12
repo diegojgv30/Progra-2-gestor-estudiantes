@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}Control de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark m-0">
+                    <i class="bi bi-people-fill text-primary me-2"></i>
+                    Gestión de Estudiantes
+                </h2>
+                <small class="text-muted">
+                    Listado oficial de alumnos registrados en el sistema.
+                </small>
+            </div>
+
+            {% if current_user.rol.nombre == 'Administrador' %}
+
+            <button
+                type="button"
+                class="btn btn-primary shadow-sm fw-bold px-3"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEstudiante">
+
+                <i class="bi bi-person-plus-fill me-1"></i>
+                Nuevo Estudiante
+
+            </button>
+
+            {% endif %}
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3 mb-3">
+
+            <div class="card-body">
+
+                <form
+                    method="GET"
+                    action="{{ url_for('estudiantes.lista') }}">
+
+                    <div class="input-group">
+
+                        <input
+                            type="text"
+                            name="buscar"
+                            class="form-control"
+                            placeholder="Buscar por carnet, nombre, apellido o correo..."
+                            value="{{ busqueda }}">
+
+                        <button
+                            class="btn btn-primary"
+                            type="submit">
+
+                            <i class="bi bi-search me-1"></i>
+                            Buscar
+
+                        </button>
+
+                        {% if busqueda %}
+
+                        <a
+                            href="{{ url_for('estudiantes.lista') }}"
+                            class="btn btn-secondary">
+
+                            Limpiar
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th class="ps-4" style="width: 20%;">
+                                    Carnet
+                                </th>
+
+                                <th style="width: 40%;">
+                                    Nombre Completo
+                                </th>
+
+                                <th style="width: 30%;">
+                                    Correo Electrónico
+                                </th>
+
+                                <th
+                                    class="text-end pe-4"
+                                    style="width: 10%;">
+
+                                    Acciones
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% if estudiantes %}
+
+                                {% for est in estudiantes %}
+
+                                <tr>
+
+                                    <td class="ps-4 fw-semibold text-primary">
+
+                                        {{ est.carnet }}
+
+                                    </td>
+
+                                    <td class="fw-bold text-secondary">
+
+                                        {{ est.nombres }}
+                                        {{ est.apellidos }}
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge bg-light text-dark border">
+
+                                            {{ est.correo }}
+
+                                        </span>
+
+                                    </td>
+
+                                    <td class="text-end pe-4">
+
+                                        {% if current_user.rol.nombre == 'Administrador' %}
+
+                                        <div class="d-flex justify-content-end gap-1">
+
+                                            <a
+                                                href="{{ url_for('estudiantes.editar', id=est.id) }}"
+                                                class="btn btn-sm btn-outline-warning"
+                                                title="Editar Estudiante">
+
+                                                <i class="bi bi-pencil-square text-dark"></i>
+
+                                            </a>
+
+                                            <form
+                                                action="{{ url_for('estudiantes.eliminar', id=est.id) }}"
+                                                method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('¿Estás seguro de eliminar a este estudiante?');">
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Eliminar">
+
+                                                    <i class="bi bi-trash3-fill"></i>
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                        {% else %}
+
+                                        <span class="text-muted small">
+
+                                            Solo lectura
+
+                                        </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="text-center py-5 text-muted">
+
+                                    <i
+                                        class="bi bi-person-x d-block mb-2"
+                                        style="font-size: 2.5rem;">
+                                    </i>
+
+                                    {% if busqueda %}
+
+                                        No se encontraron estudiantes para la búsqueda realizada.
+
+                                    {% else %}
+
+                                        No hay estudiantes registrados actualmente.
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endif %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% if current_user.rol.nombre == 'Administrador' %}
+
+<div
+    class="modal fade"
+    id="modalEstudiante"
+    data-bs-backdrop="static"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg">
+
+            <div class="modal-header bg-dark text-white">
+
+                <h5 class="modal-title fw-bold">
+
+                    <i class="bi bi-person-plus-fill me-2 text-warning"></i>
+
+                    Registrar Estudiante
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+
+            </div>
+
+            <form
+                method="POST"
+                action="{{ url_for('estudiantes.crear') }}">
+
+                {{ form.hidden_tag() }}
+
+                <div class="modal-body p-4">
+
+                    <div class="mb-3">
+
+                        {{ form.carnet.label(class="form-label fw-semibold") }}
+
+                        {{ form.carnet(
+                            class="form-control",
+                            placeholder="Ej: GV16016"
+                        ) }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.nombres.label(class="form-label fw-semibold") }}
+
+                        {{ form.nombres(
+                            class="form-control",
+                            placeholder="Juan Antonio"
+                        ) }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.apellidos.label(class="form-label fw-semibold") }}
+
+                        {{ form.apellidos(
+                            class="form-control",
+                            placeholder="Pérez Gómez"
+                        ) }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.correo.label(class="form-label fw-semibold") }}
+
+                        {{ form.correo(
+                            class="form-control",
+                            placeholder="juan.perez@ues.edu.sv"
+                        ) }}
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer bg-light border-top-0">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary fw-semibold"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    {{ form.submit(
+                        class="btn btn-primary fw-bold px-4",
+                        value="Guardar Estudiante"
+                    ) }}
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
