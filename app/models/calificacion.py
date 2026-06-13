@@ -7,7 +7,7 @@ class Calificacion(db.Model):
     nota = db.Column(db.Float, nullable=False)
     inscripcion_id = db.Column(db.Integer, db.ForeignKey('inscripciones.id'), nullable=False)
     
-    # 🌟 CORRECCIÓN: Usamos comillas para evitar el error de "failed to locate a name"
+    # Usamos comillas para evitar el error de "failed to locate a name"
     inscripcion = db.relationship('Inscripcion', backref='calificaciones')
 
     def __init__(self, nota, inscripcion_id):
